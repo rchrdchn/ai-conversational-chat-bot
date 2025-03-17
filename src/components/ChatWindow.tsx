@@ -8,12 +8,12 @@ interface ChatWindowProps {
   onSendMessage: (text: string) => void;
 }
 
-const ChatWindow: React.FC<ChatWindowProps> = ({ messages, onSendMessage }) => {
+const ChatWindow: React.FC<ChatWindowProps> = ({ messages, onSendMessage, onFileUpload }) => {
   return (
     <div className="h-[80vh] flex flex-col">
       <Navbar />
       <MessageList messages={messages} />
-      <InputBox onSendMessage={onSendMessage} />
+      <InputBox onSendMessage={onSendMessage} onFileUpload={onFileUpload} />
     </div>
   );
 };
