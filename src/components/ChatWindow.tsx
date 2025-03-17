@@ -1,18 +1,17 @@
 import React from 'react';
 import MessageList from './MessageList';
 import InputBox from './InputBox';
-import Navbar from './Navbar';
 
 interface ChatWindowProps {
-  messages: { text: string; isUser: boolean }[];
-  onSendMessage: (text: string) => void;
+   messages: { text: string; isUser: boolean }[];
+   onSendMessage: (data: { text: string; file: File | null }) => void;
 }
 
-const ChatWindow: React.FC<ChatWindowProps> = ({ messages, onSendMessage, onFileUpload }) => {
+const ChatWindow: React.FC<ChatWindowProps> = ({ messages, onSendMessage }) => {
   return (
     <div className="h-[80vh] flex flex-col">
       <MessageList messages={messages} />
-      <InputBox onSendMessage={onSendMessage} onFileUpload={onFileUpload} />
+      <InputBox onSendMessage={onSendMessage} />
     </div>
   );
 };
