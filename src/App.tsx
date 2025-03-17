@@ -11,7 +11,7 @@ interface Conversation {
 }
 
 const App: React.FC = () => {
-  // Initialize conversations from localStorage
+  // Initialize conversations from localStorage or create the first conversation
   const [conversations, setConversations] = useState<Conversation[]>(() => {
     const savedConversations = localStorage.getItem('conversations');
     if (savedConversations) {
@@ -27,17 +27,26 @@ const App: React.FC = () => {
         console.error('Failed to parse conversations from localStorage during initialization:', error);
       }
     }
-    return []; // Default to an empty array if no valid data is found
+
+    // Create the first conversation if no saved conversations exist
+    const firstConversation: Conversation = {
+      id: Date.now().toString(),
+      title: 'Conversation: 1',
+      messages: [],
+    };
+    console.log('Creating the first conversation:', firstConversation); // Debug log
+    return [firstConversation];
   });
 
-  const [activeConversationId, setActiveConversationId] = useState<string | null>(null);
+  const [activeConversationId, setActiveConversationId] = useState<string | null>(
+    conversations.length > 0 ? conversations[0].id : null
+  );
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
 
   const handleSendMessage = (data: { text: string; file: File | null }) => {
     const { text, file } = data;
-  
-    // i want the first conversation to always have a conversation id
-    
+    console.log('Sending message:', { text, file }); // Debug log
+
     if (!activeConversationId) {
       // Add the user's message to a new conversation
       const newConversation: Conversation = {
@@ -51,7 +60,7 @@ const App: React.FC = () => {
       setActiveConversationId(newConversation.id);
       return;
     }
-  
+
     // Add the user's message to the active conversation
     setConversations((prev) =>
       prev.map((conversation) => {
@@ -61,11 +70,11 @@ const App: React.FC = () => {
             ...(text ? [{ text, isUser: true }] : []),
             ...(file ? [{ text: `Uploaded: ${file.name}`, isUser: true }] : []),
           ];
-  
+
           // Update the first user message if it doesn't already exist
           const firstUserMessage =
             conversation.firstUserMessage || (text ? text : `Uploaded: ${file?.name}`);
-  
+
           const updatedConversation = {
             ...conversation,
             messages: newMessages,
@@ -77,7 +86,7 @@ const App: React.FC = () => {
         return conversation;
       })
     );
-  
+
     // Simulate a response
     setTimeout(() => {
       setConversations((prev) =>
