@@ -12,8 +12,15 @@ const Navbar: React.FC = () => {
       console.log('Create new conversation');
    };
    const toggleDarkMode = () => {
-      console.log('Toggle dark mode');
+      const htmlElem = document.documentElement;
       setDarkMode(!darkMode);
+      if (darkMode) {
+         htmlElem.classList.remove('dark');
+         htmlElem.setAttribute('style', 'color-scheme: light');
+      } else {
+         htmlElem.classList.add('dark');
+         htmlElem.setAttribute('style', 'color-scheme: dark');
+      }
    }
 
    return (
