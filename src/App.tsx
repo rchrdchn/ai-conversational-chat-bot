@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import ChatWindow from './components/ChatWindow';
+import Navbar from './components/Navbar';
 
 const App: React.FC = () => {
   const [messages, setMessages] = useState<{ text: string; isUser: boolean }[]>([]);
@@ -16,9 +17,14 @@ const App: React.FC = () => {
     setMessages((prev) => [...prev, { text: `File uploaded: ${file.name}`, isUser: true }]);
   };
 
+  const handleCreateNewConversation = () => {
+    setMessages([]);
+  }
+
   return (
     <div className="max-w-4xl mx-auto p-4">
       {/* <ChatWindow messages={messages} onSendMessage={handleSendMessage} onFileUpload={onFileUpload} /> */}
+      <Navbar onCreateNewConversation={handleCreateNewConversation} />
       <ChatWindow messages={messages} onSendMessage={handleSendMessage} />
     </div>
   );

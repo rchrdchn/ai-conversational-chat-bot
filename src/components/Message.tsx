@@ -21,7 +21,7 @@ const Message: React.FC<MessageProps> = ({ text, isUser }) => {
       <div className={`p-3 rounded-3xl
          ${isUser ? 'ml-auto' : 'mr-auto'}
          ${isUser ? 'max-w-[30%] border' : "max-w-[100%]"}
-         ${isUser ? 'bg-gray-200 dark:bg-gray-400 dark:border-gray-400 text-black self-end' : 'self-start'}`
+         ${isUser ? 'bg-gray-200 dark:bg-gray-400 dark:border-gray-400 dark:text-gray-100 text-black whitespace-pre-wrap self-end' : 'self-start'}`
       }>
       {text}
       <div>
