@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import AbelFull from '../assets/abel-full.svg';
 
 interface NavbarProps {
@@ -10,16 +10,35 @@ const Navbar: React.FC<NavbarProps> = ({ onCreateNewConversation, onShowConversa
   const [darkMode, setDarkMode] = React.useState(false);
 
   const toggleDarkMode = () => {
-    const htmlElem = document.documentElement;
-    setDarkMode(!darkMode);
-    if (darkMode) {
-      htmlElem.classList.remove('dark');
-      htmlElem.setAttribute('style', 'color-scheme: light');
-    } else {
-      htmlElem.classList.add('dark');
-      htmlElem.setAttribute('style', 'color-scheme: dark');
-    }
-  };
+   const htmlElem = document.documentElement;
+   const newDarkMode = !darkMode;
+   setDarkMode(newDarkMode);
+
+   if (newDarkMode) {
+     htmlElem.classList.add('dark');
+     htmlElem.setAttribute('style', 'color-scheme: dark');
+     localStorage.setItem('darkMode', 'true'); // Save dark mode state to localStorage
+   } else {
+     htmlElem.classList.remove('dark');
+     htmlElem.setAttribute('style', 'color-scheme: light');
+     localStorage.setItem('darkMode', 'false'); // Save light mode state to localStorage
+   }
+ };
+
+ useEffect(() => {
+   // Load dark mode state from localStorage on component mount
+   const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+   setDarkMode(savedDarkMode);
+
+   const htmlElem = document.documentElement;
+   if (savedDarkMode) {
+     htmlElem.classList.add('dark');
+     htmlElem.setAttribute('style', 'color-scheme: dark');
+   } else {
+     htmlElem.classList.remove('dark');
+     htmlElem.setAttribute('style', 'color-scheme: light');
+   }
+ }, []);
 
   return (
     <div className="h-16 flex items-center justify-between w-full">
