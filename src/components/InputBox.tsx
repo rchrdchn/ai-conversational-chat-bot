@@ -16,8 +16,9 @@ const InputBox: React.FC<InputBoxProps> = ({ onSendMessage }) => {
   };
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Submit both text and file
+    e.preventDefault(); // Prevent default form submission
+
+    // Ensure either text or file is provided
     if (input.trim() || file) {
       onSendMessage({ text: input.trim(), file });
       setInput(''); // Clear the text input
@@ -45,6 +46,7 @@ const InputBox: React.FC<InputBoxProps> = ({ onSendMessage }) => {
             </button>
          </div>
       )}
+      {/* Input box */}
       <div className='flex-grow flex gap-2'>
       <input
         type="text"

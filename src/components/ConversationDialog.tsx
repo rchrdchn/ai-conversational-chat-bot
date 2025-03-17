@@ -1,13 +1,34 @@
 import React, { useRef, useEffect } from 'react';
 
-interface ConversationsDialogProps {
-  messages: { text: string; isUser: boolean }[];
-  isOpen: boolean;
-  onClose: () => void;
+interface ConversationSummary {
+  id: string;
+  title: string;
+  firstUserMessage: string;
 }
 
-const ConversationsDialog: React.FC<ConversationsDialogProps> = ({ messages, isOpen, onClose }) => {
+interface ConversationsDialogProps {
+  conversations: ConversationSummary[];
+  isOpen: boolean;
+  onClose: () => void;
+  onSelectConversation: (id: string) => void;
+}
+
+const ConversationsDialog: React.FC<ConversationsDialogProps> = ({
+  conversations,
+  isOpen,
+  onClose,
+  onSelectConversation,
+}) => {
   const dialogRef = useRef<HTMLDialogElement>(null);
+
+  const handleClearConversations = () => {
+      // alert the user before clearing the conversations
+      if (!window.confirm('Are you sure you want to clear all conversations?')) {
+         return;
+      }
+      localStorage.removeItem('conversations');
+      window.location.reload();
+   };
 
   useEffect(() => {
     const dialog = dialogRef.current;
@@ -23,47 +44,39 @@ const ConversationsDialog: React.FC<ConversationsDialogProps> = ({ messages, isO
   return (
     <dialog
       ref={dialogRef}
-      className="rounded-lg w-full max-w-md p-6 max-h-[80vh] overflow-y-auto backdrop:bg-black backdrop:bg-opacity-50"
+      className="dark:bg-gray-600 rounded-lg w-full max-w-md p-6 max-h-[80vh] overflow-y-auto backdrop:bg-black backdrop:bg-opacity-50"
     >
       <div className="flex justify-between items-center mb-4">
-        <h3 className="text-xl font-bold text-gray-800">Conversation History</h3>
-        <button
-          onClick={onClose}
-          className="text-gray-500 hover:text-gray-700 focus:outline-none"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
-        </button>
+         <h3 className="dark:text-gray-50 text-xl font-bold text-gray-800">Conversation History</h3>
+         <button
+            onClick={onClose}
+            className="dark:text-white text-gray-500 hover:text-gray-700 focus:outline-none"
+         >
+               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+               </svg>
+         </button>
       </div>
-      {messages.length > 0 ? (
+      {conversations.length > 0 ? (
         <div className="space-y-4">
-          {messages.map((msg, index) => (
-            <div
-              key={index}
-              className={`p-3 rounded-lg ${
-                msg.isUser
-                  ? 'bg-blue-100 text-blue-800 self-end'
-                  : 'bg-gray-100 text-gray-800 self-start'
-              }`}
+          {conversations.map((conversation) => (
+            <button
+              key={conversation.id}
+              onClick={() => onSelectConversation(conversation.id)}
+              className="block w-full text-left p-2 rounded bg-gray-100 dark:bg-gray-700 hover:bg-gray-200"
             >
-              {msg.text}
-            </div>
+              <h4 className="font-bold dark:text-gray-50">{conversation.title}</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-100">{conversation.firstUserMessage}</p>
+            </button>
           ))}
+         <div className='mt-4'>
+            <button onClick={handleClearConversations} className="w-full bg-red-500 hover:bg-red-600 rounded py-1 px-2 text-white focus:outline-none">
+               Clear
+            </button>
+         </div>
         </div>
       ) : (
-        <p className="text-gray-500">No messages yet.</p>
+        <p className="text-gray-500 dark:text-gray-200">No conversations yet.</p>
       )}
     </dialog>
   );
