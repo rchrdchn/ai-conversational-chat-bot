@@ -11,15 +11,16 @@ interface Conversation {
 }
 
 const App: React.FC = () => {
-  // Initialize conversations from localStorage or create the first conversation
+  // Initialize conversations from localStorage and add a new empty conversation
   const [conversations, setConversations] = useState<Conversation[]>(() => {
     const savedConversations = localStorage.getItem('conversations');
+    let loadedConversations: Conversation[] = [];
     if (savedConversations) {
       try {
         const parsedConversations = JSON.parse(savedConversations);
         if (Array.isArray(parsedConversations)) {
           console.log('Loaded conversations from localStorage during initialization:', parsedConversations); // Debug log
-          return parsedConversations;
+          loadedConversations = parsedConversations;
         } else {
           console.error('Invalid conversations format in localStorage:', parsedConversations);
         }
@@ -28,18 +29,20 @@ const App: React.FC = () => {
       }
     }
 
-    // Create the first conversation if no saved conversations exist
-    const firstConversation: Conversation = {
+    // Create a new empty conversation
+    const newConversation: Conversation = {
       id: Date.now().toString(),
-      title: 'Conversation: 1',
+      title: `Conversation: ${loadedConversations.length + 1}`,
       messages: [],
     };
-    console.log('Creating the first conversation:', firstConversation); // Debug log
-    return [firstConversation];
+    console.log('Creating a new empty conversation:', newConversation); // Debug log
+
+    // Return the existing conversations with the new one appended
+    return [...loadedConversations, newConversation];
   });
 
   const [activeConversationId, setActiveConversationId] = useState<string | null>(
-    conversations.length > 0 ? conversations[0].id : null
+    conversations.length > 0 ? conversations[conversations.length - 1].id : null
   );
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
 
