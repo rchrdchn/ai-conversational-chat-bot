@@ -26,14 +26,21 @@ const InputBox: React.FC<InputBoxProps> = ({ onSendMessage }) => {
       setFile(null);
     }
   };
-  
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit(e);
+    }
+  };
+
   const removeFile = () => setFile(null);
 
   return (
     <form onSubmit={handleSubmit} className="p-4 gap-2">
       {/* display uploaded file */}
       {file && (
-         <div className='bg-gray-200 max-w-max rounded-xl p-1 mb-1.5 flex items-center dark:bg-gray-800 dark:text-white'>
+         <div className='transition-all duration-300 bg-gray-200 max-w-max rounded-xl p-1 mb-1.5 flex items-center dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white'>
             <div className='m-1' title='Attachment'>
                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="size-4">
                   <path fillRule="evenodd" d="M4 2a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 14h8a1.5 1.5 0 0 0 1.5-1.5V6.621a1.5 1.5 0 0 0-.44-1.06L9.94 2.439A1.5 1.5 0 0 0 8.878 2H4Zm1 5.75A.75.75 0 0 1 5.75 7h4.5a.75.75 0 0 1 0 1.5h-4.5A.75.75 0 0 1 5 7.75Zm0 3a.75.75 0 0 1 .75-.75h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1-.75-.75Z" clipRule="evenodd" />
@@ -49,15 +56,16 @@ const InputBox: React.FC<InputBoxProps> = ({ onSendMessage }) => {
       )}
       {/* Input box */}
       <div className='flex-grow flex gap-2'>
-      <input
-        type="text"
+      <textarea
+        rows={1}
         value={input}
         onChange={(e) => setInput(e.target.value)}
+        onKeyDown={handleKeyDown}
         placeholder="How can Abel help?"
         className="font-sans flex-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
       {/* File upload button */}
-      <label title='Select attachment' className="cursor-pointer flex items-center px-4 py-2 bg-gray-200 text-black rounded-md hover:bg-gray-300 transition">
+      <label title='Select attachment' className="transition-all duration-300 cursor-pointer flex items-center px-4 py-2 bg-gray-200 text-black rounded-md hover:bg-gray-300">
         <input type="file" className="hidden" onChange={handleFileChange}/>
         <span>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="size-4">
@@ -70,7 +78,7 @@ const InputBox: React.FC<InputBoxProps> = ({ onSendMessage }) => {
         type="submit"
         title='Send'
         disabled={!input.trim() && !file}
-        className={`px-4 py-2 bg-blue-600 text-white rounded-md ${input.trim() || file && `hover:bg-blue-700`} transition`}
+        className={`transition-all duration-300 px-4 py-2 bg-blue-600 text-white rounded-md ${(input.trim() || file) && `hover:bg-blue-700 dark:hover:bg-blue-700`}`}
       >
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="size-4">
            <path d="M2.87 2.298a.75.75 0 0 0-.812 1.021L3.39 6.624a1 1 0 0 0 .928.626H8.25a.75.75 0 0 1 0 1.5H4.318a1 1 0 0 0-.927.626l-1.333 3.305a.75.75 0 0 0 .811 1.022 24.89 24.89 0 0 0 11.668-5.115.75.75 0 0 0 0-1.175A24.89 24.89 0 0 0 2.869 2.298Z" />

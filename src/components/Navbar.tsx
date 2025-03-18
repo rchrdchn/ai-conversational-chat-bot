@@ -50,11 +50,44 @@ const Navbar: React.FC<NavbarProps> = ({ onCreateNewConversation, onShowConversa
       </div>
       <div className="grow justify-center hidden max-w-[50%] @[640px]/nav:flex"></div>
       <div className="p-4 absolute flex flex-row items-center gap-0.5 ml-auto end-3">
+        {/* Create New Conversation Button */}
+        <button
+          onClick={onCreateNewConversation}
+          title='Create a New Conversation'
+          className="transition-all duration-300 border rounded-full p-2 hover:bg-blue-500 hover:text-white dark:hover:bg-blue-500 dark:hover:border-blue-400"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 16 16"
+            fill="currentColor"
+            className="size-4"
+          >
+            <path d="M13.488 2.513a1.75 1.75 0 0 0-2.475 0L6.75 6.774a2.75 2.75 0 0 0-.596.892l-.848 2.047a.75.75 0 0 0 .98.98l2.047-.848a2.75 2.75 0 0 0 .892-.596l4.261-4.262a1.75 1.75 0 0 0 0-2.474Z" />
+            <path d="M4.75 3.5c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h6.5c.69 0 1.25-.56 1.25-1.25V9A.75.75 0 0 1 14 9v2.25A2.75 2.75 0 0 1 11.25 14h-6.5A2.75 2.75 0 0 1 2 11.25v-6.5A2.75 2.75 0 0 1 4.75 2H7a.75.75 0 0 1 0 1.5H4.75Z" />
+          </svg>
+        </button>
+
+        {/* Show Conversations Button */}
+        <button
+          onClick={onShowConversations}
+          title='Show Conversations'
+          className="transition-all duration-300 border rounded-full p-2 mx-1.5 hover:bg-blue-500 hover:text-white dark:hover:bg-blue-500 dark:hover:border-blue-400"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 16 16"
+            fill="currentColor"
+            className="size-4"
+          >
+            <path d="M3 4.75a1 1 0 1 0 0-2 1 1 0 0 0 0 2ZM6.25 3a.75.75 0 0 0 0 1.5h7a.75.75 0 0 0 0-1.5h-7ZM6.25 7.25a.75.75 0 0 0 0 1.5h7a.75.75 0 0 0 0-1.5h-7ZM6.25 11.5a.75.75 0 0 0 0 1.5h7a.75.75 0 0 0 0-1.5h-7ZM4 12.25a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM3 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" />
+          </svg>
+        </button>
+
         {/* Dark Mode Toggle Button */}
         <button
           onClick={toggleDarkMode}
           title={darkMode ? 'Enable Light Mode' : 'Enable Dark Mode'}
-          className="border rounded-full p-2 hover:bg-blue-500 hover:text-white dark:hover:bg-blue-500 dark:hover:border-blue-400"
+          className="transition-all duration-300 border rounded-full p-2 hover:bg-blue-500 hover:text-white dark:hover:bg-blue-500 dark:hover:border-blue-400"
         >
           {darkMode ? (
             <svg
@@ -75,39 +108,6 @@ const Navbar: React.FC<NavbarProps> = ({ onCreateNewConversation, onShowConversa
               <path d="M14.438 10.148c.19-.425-.321-.787-.748-.601A5.5 5.5 0 0 1 6.453 2.31c.186-.427-.176-.938-.6-.748a6.501 6.501 0 1 0 8.585 8.586Z" />
             </svg>
           )}
-        </button>
-
-        {/* Show Conversations Button */}
-        <button
-          onClick={onShowConversations}
-          title='Show Conversations'
-          className="border rounded-full p-2 mx-1.5 hover:bg-blue-500 hover:text-white dark:hover:bg-blue-500 dark:hover:border-blue-400"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 16 16"
-            fill="currentColor"
-            className="size-4"
-          >
-            <path d="M3 4.75a1 1 0 1 0 0-2 1 1 0 0 0 0 2ZM6.25 3a.75.75 0 0 0 0 1.5h7a.75.75 0 0 0 0-1.5h-7ZM6.25 7.25a.75.75 0 0 0 0 1.5h7a.75.75 0 0 0 0-1.5h-7ZM6.25 11.5a.75.75 0 0 0 0 1.5h7a.75.75 0 0 0 0-1.5h-7ZM4 12.25a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM3 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" />
-          </svg>
-        </button>
-
-        {/* Create New Conversation Button */}
-        <button
-          onClick={onCreateNewConversation}
-          title='Create a New Conversation'
-          className="border rounded-full p-2 hover:bg-blue-500 hover:text-white dark:hover:bg-blue-500 dark:hover:border-blue-400"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 16 16"
-            fill="currentColor"
-            className="size-4"
-          >
-            <path d="M13.488 2.513a1.75 1.75 0 0 0-2.475 0L6.75 6.774a2.75 2.75 0 0 0-.596.892l-.848 2.047a.75.75 0 0 0 .98.98l2.047-.848a2.75 2.75 0 0 0 .892-.596l4.261-4.262a1.75 1.75 0 0 0 0-2.474Z" />
-            <path d="M4.75 3.5c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h6.5c.69 0 1.25-.56 1.25-1.25V9A.75.75 0 0 1 14 9v2.25A2.75 2.75 0 0 1 11.25 14h-6.5A2.75 2.75 0 0 1 2 11.25v-6.5A2.75 2.75 0 0 1 4.75 2H7a.75.75 0 0 1 0 1.5H4.75Z" />
-          </svg>
         </button>
       </div>
     </div>

@@ -143,7 +143,27 @@ const App: React.FC = () => {
     setActiveConversationId(newConversation.id);
   };
 
+  const handleDeleteConversation = (id: string) => {
+    const isConfirmed = window.confirm('Are you sure you want to delete this conversation?');
+  
+    if (isConfirmed) {
+      setConversations((prev) => prev.filter((conversation) => conversation.id !== id));
+  
+      // If the deleted conversation is the active one, reset the active conversation
+      if (activeConversationId === id) {
+        setActiveConversationId(null);
+      }
+    }
+  };
+
   const handleShowConversations = () => setIsHistoryOpen(true);
+
+  const filteredConversations = conversations.filter((c) => c.firstUserMessage && c.firstUserMessage.trim() !== '').map((c) => ({
+    id: c.id,
+    title: c.title,
+    firstUserMessage: c.firstUserMessage,
+    createdAt: formatDistanceToNow(c.createdAt, { addSuffix: true }),
+  }));
 
   useEffect(() => {
     saveConversationsToLocalStorage(conversations);
@@ -158,20 +178,14 @@ const App: React.FC = () => {
       <ChatWindow
         messages={conversations.find((c) => c.id === activeConversationId)?.messages || []}
         onSendMessage={handleSendMessage}
-        isLoading={isLoading} // Pass loading state
+        isLoading={isLoading}
       />
       <ConversationsDialog
-        conversations={conversations
-          .filter((c) => c.firstUserMessage && c.firstUserMessage.trim() !== '')
-          .map((c) => ({
-            id: c.id,
-            title: c.title,
-            firstUserMessage: c.firstUserMessage,
-            createdAt: formatDistanceToNow(c.createdAt, { addSuffix: true }),
-          }))}
+        conversations={filteredConversations}
         isOpen={isHistoryOpen}
         onClose={() => setIsHistoryOpen(false)}
         onSelectConversation={(id) => setActiveConversationId(id)}
+        onDeleteConversation={(id) => handleDeleteConversation(id)}
       />
     </div>
   );
