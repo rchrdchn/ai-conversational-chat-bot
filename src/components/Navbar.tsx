@@ -53,6 +53,7 @@ const Navbar: React.FC<NavbarProps> = ({ onCreateNewConversation, onShowConversa
         {/* Dark Mode Toggle Button */}
         <button
           onClick={toggleDarkMode}
+          title={darkMode ? 'Enable Light Mode' : 'Enable Dark Mode'}
           className="border rounded-full p-2 hover:bg-blue-500 hover:text-white dark:hover:bg-blue-500 dark:hover:border-blue-400"
         >
           {darkMode ? (
@@ -79,6 +80,7 @@ const Navbar: React.FC<NavbarProps> = ({ onCreateNewConversation, onShowConversa
         {/* Show Conversations Button */}
         <button
           onClick={onShowConversations}
+          title='Show Conversations'
           className="border rounded-full p-2 mx-1.5 hover:bg-blue-500 hover:text-white dark:hover:bg-blue-500 dark:hover:border-blue-400"
         >
           <svg
@@ -94,6 +96,7 @@ const Navbar: React.FC<NavbarProps> = ({ onCreateNewConversation, onShowConversa
         {/* Create New Conversation Button */}
         <button
           onClick={onCreateNewConversation}
+          title='Create a New Conversation'
           className="border rounded-full p-2 hover:bg-blue-500 hover:text-white dark:hover:bg-blue-500 dark:hover:border-blue-400"
         >
           <svg

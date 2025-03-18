@@ -8,25 +8,15 @@ interface MessageListProps {
 
 const MessageList: React.FC<MessageListProps> = ({ messages, isLoading }) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const listRef = useRef<HTMLDivElement>(null);
 
-  const scrollToBottomIfNeeded = () => {
-    const list = listRef.current;
-    if (list) {
-      const isAtBottom = list.scrollHeight - list.scrollTop <= list.clientHeight + 50;
-      if (isAtBottom) {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
-  };
+  const scrollToBottom = () => messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
 
   useEffect(() => {
-    scrollToBottomIfNeeded();
+    scrollToBottom();
   }, [messages, isLoading]);
 
   return (
     <div
-      ref={listRef}
       className="flex-1 overflow-y-auto p-4 space-y-4"
       role="log"
       aria-live="polite"

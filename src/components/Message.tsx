@@ -20,7 +20,7 @@ const Message: React.FC<MessageProps> = ({ text, isUser }) => {
       <div>
          <div className={`rounded-3xl
             ${isUser ? 'ml-auto' : 'mr-auto'}
-            ${isUser ? 'w-fit' : "max-w-[100%]"}
+            ${isUser ? 'w-fit max-w-[75%]' : "max-w-[100%]"}
             ${isUser ? 'py-2 px-4 bg-gray-200 dark:bg-slate-700 dark:border-gray-400 dark:text-gray-100 text-black whitespace-pre-wrap self-end rounded-br-lg break-words' : 'self-start'}`
          }>
          {text}

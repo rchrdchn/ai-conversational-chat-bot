@@ -30,6 +30,11 @@ const ConversationsDialog: React.FC<ConversationsDialogProps> = ({
       window.location.reload();
    }
 
+   const handleSelectedConversation = (id: string) => {
+      onClose();
+      onSelectConversation(id);
+    };
+
    const toggleDialogVisibility = useCallback(() => {
     const dialog = dialogRef.current;
     if (dialog) {
@@ -55,11 +60,15 @@ const ConversationsDialog: React.FC<ConversationsDialogProps> = ({
             <h3 className="dark:text-slate-50 text-xl font-bold text-gray-800">Conversation History</h3>
          </div>
          <div className='flex gap-2'>
-            <button onClick={handleNewChat} className="bg-blue-600 hover:bg-blue-700 rounded py-1 px-2 mr-2 text-white focus:outline-none">
+            <button
+              onClick={handleNewChat}
+              title='Start a new chat'
+              className="bg-blue-600 hover:bg-blue-700 rounded py-1 px-2 mr-2 text-white focus:outline-none">
                New Chat
             </button>
             <button
                onClick={onClose}
+               title='Close dialog'
                className="text-gray-500 hover:text-gray-700 dark:text-slate-100 dark:hover:text-white focus:outline-none mr-2"
             >
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
@@ -73,7 +82,8 @@ const ConversationsDialog: React.FC<ConversationsDialogProps> = ({
           {conversations.map((conversation) => (
             <button
               key={conversation.id}
-              onClick={() => onSelectConversation(conversation.id)}
+              onClick={() => handleSelectedConversation(conversation.id)}
+              title={`Select conversation: ${conversation.firstUserMessage}`}
               className="block w-full text-left py-2 px-4 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-200"
             >
               <h4 className="font-bold mb-1 text-slate-900 dark:text-slate-50">{conversation.firstUserMessage}</h4>
@@ -81,7 +91,10 @@ const ConversationsDialog: React.FC<ConversationsDialogProps> = ({
             </button>
           ))}
          <div className='mt-4 pt-2'>
-            <button onClick={handleClearConversations} className="w-full border border-red-500 text-red-500 hover:bg-red-500 dark:hover:bg-red-600 dark:bg-red-500 dark:text-white rounded py-1 px-2 hover:text-white focus:outline-none">
+            <button
+              onClick={handleClearConversations}
+              title='Delete all conversations'
+              className="w-full border border-red-500 text-red-500 hover:bg-red-500 dark:hover:bg-red-600 dark:bg-red-500 dark:text-white rounded py-1 px-2 hover:text-white focus:outline-none">
                Delete All Conversations
             </button>
          </div>
