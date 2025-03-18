@@ -25,7 +25,7 @@ const MessageList: React.FC<MessageListProps> = ({ messages, isLoading }) => {
         <Message key={index} text={msg.text} isUser={msg.isUser} />
       ))}
       {isLoading && (
-        <div className="p-3 rounded-3xl w-fit bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 self-start">
+        <div className="font-sans p-3 rounded-3xl w-fit bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 self-start">
           Typing...
         </div>
       )}

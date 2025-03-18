@@ -5,6 +5,7 @@ import Navbar from './components/Navbar';
 import { callOpenAIAPI } from './api/openai';
 import { Conversation } from './components/types';
 import { formatDistanceToNow } from 'date-fns';
+// import '@fontsource/inter/variable.css';
 
 const App: React.FC = () => {
   // Load conversations from localStorage - here to load conversations from localStorage, if any, when the app starts

@@ -57,14 +57,14 @@ const ConversationsDialog: React.FC<ConversationsDialogProps> = ({
     >
       <div className="flex justify-between items-center mb-4">
          <div>
-            <h3 className="dark:text-slate-50 text-xl font-bold text-gray-800">Conversation History</h3>
+            <h3 className="font-sans dark:text-slate-50 text-xl font-bold text-gray-800">Conversation History</h3>
          </div>
          <div className='flex gap-2'>
             <button
               onClick={handleNewChat}
               title='Start a new chat'
               tabIndex={0}
-              className="bg-blue-600 hover:bg-blue-700 rounded py-1 px-2 mr-1 text-white focus:outline-none">
+              className="font-sans bg-blue-600 hover:bg-blue-700 rounded py-1 px-2 mr-1 text-white focus:outline-none">
                New Chat
             </button>
             <button
@@ -88,8 +88,8 @@ const ConversationsDialog: React.FC<ConversationsDialogProps> = ({
               title={`Select conversation: ${conversation.firstUserMessage}`}
               className="block w-full text-left py-2 px-4 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-200"
             >
-              <h4 className="font-bold mb-1 text-slate-900 dark:text-slate-50">{conversation.firstUserMessage}</h4>
-              <p className="text-xs text-slate-500 dark:text-slate-300">{conversation.createdAt}</p>
+              <h4 className="font-sans font-semibold mb-1 text-slate-900 dark:text-slate-50">{conversation.firstUserMessage}</h4>
+              <p className="font-sans text-xs text-slate-500 dark:text-slate-300">{conversation.createdAt}</p>
             </button>
           ))}
          <div className='mt-4 pt-2'>
@@ -97,13 +97,13 @@ const ConversationsDialog: React.FC<ConversationsDialogProps> = ({
               onClick={handleClearConversations}
               title='Delete all conversations'
               tabIndex={0}
-              className="w-full border border-red-500 text-red-500 hover:bg-red-500 dark:hover:bg-red-600 dark:bg-red-500 dark:text-white rounded py-1 px-2 hover:text-white focus:outline-none">
+              className="font-sans w-full border border-red-500 text-red-500 hover:bg-red-500 dark:hover:bg-red-600 dark:bg-red-500 dark:text-white rounded py-1 px-2 hover:text-white focus:outline-none">
                Delete All Conversations
             </button>
          </div>
         </div>
       ) : (
-        <p className="text-gray-500 dark:text-gray-200">No conversations yet.</p>
+        <p className="font-sans text-gray-500 dark:text-gray-200">No conversations yet.</p>
       )}
     </dialog>
   );

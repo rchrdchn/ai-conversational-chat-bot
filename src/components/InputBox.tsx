@@ -54,7 +54,7 @@ const InputBox: React.FC<InputBoxProps> = ({ onSendMessage }) => {
         value={input}
         onChange={(e) => setInput(e.target.value)}
         placeholder="How can Abel help?"
-        className="flex-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="font-sans flex-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
       {/* File upload button */}
       <label title='Select attachment' className="cursor-pointer flex items-center px-4 py-2 bg-gray-200 text-black rounded-md hover:bg-gray-300 transition">
