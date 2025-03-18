@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import ChatWindow from './components/ChatWindow';
 import Navbar from './components/Navbar';
 import ConversationsDialog from './components/ConversationsDialog';
+import { formatDistanceToNow } from 'date-fns';
 
 interface Conversation {
   id: string;
   title: string;
   messages: { text: string; isUser: boolean }[];
   firstUserMessage?: string;
+  createdAt: number;
 }
 
 const API_KEY = import.meta.env.VITE_OPENAI_API_KEY;
@@ -30,6 +32,7 @@ const App: React.FC = () => {
       id: Date.now().toString(),
       title: `Conversation: ${loadedConversations.length + 1}`,
       messages: [],
+      createdAt: Date.now()
     };
     return [...loadedConversations, newConversation];
   });
@@ -46,8 +49,9 @@ const App: React.FC = () => {
     if (!activeConversationId) {
       const newConversation: Conversation = {
         id: Date.now().toString(),
-        title: `Conversation: ${conversations.length + 1}`,
+        title: `Conversation: ${text}`,
         messages: [{ text, isUser: true }],
+        createdAt: Date.now(),
         firstUserMessage: text,
       };
       setConversations((prev) => [...prev, newConversation]);
@@ -136,6 +140,7 @@ const App: React.FC = () => {
       id: Date.now().toString(),
       title: `Conversation: ${conversations.length + 1}`,
       messages: [],
+      createdAt: Date.now(),
     };
     setConversations([...conversations, newConversation]);
     setActiveConversationId(newConversation.id);
@@ -146,6 +151,7 @@ const App: React.FC = () => {
   useEffect(() => {
     try {
       localStorage.setItem('conversations', JSON.stringify(conversations));
+      console.log(conversations)
     } catch (error) {
       console.error('Failed to save conversations to localStorage:', error);
     }
@@ -163,10 +169,13 @@ const App: React.FC = () => {
         isLoading={isLoading} // Pass loading state
       />
       <ConversationsDialog
-        conversations={conversations.map((c) => ({
-          id: c.id,
-          title: c.title,
-          firstUserMessage: c.firstUserMessage || 'No messages yet',
+        conversations={conversations
+          .filter((c) => c.firstUserMessage && c.firstUserMessage.trim() !== '')
+          .map((c) => ({
+            id: c.id,
+            title: c.title,
+            firstUserMessage: c.firstUserMessage,
+            createdAt: formatDistanceToNow(c.createdAt)
         }))}
         isOpen={isHistoryOpen}
         onClose={() => setIsHistoryOpen(false)}
