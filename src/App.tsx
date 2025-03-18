@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ChatWindow from './components/ChatWindow';
 import Navbar from './components/Navbar';
-import ConversationsDialog from './components/ConversationDialog';
+import ConversationsDialog from './components/ConversationsDialog';
 
 interface Conversation {
   id: string;
