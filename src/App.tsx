@@ -8,7 +8,15 @@ import { formatDistanceToNow } from 'date-fns';
 const API_KEY = import.meta.env.VITE_OPENAI_API_KEY;
 
 const App: React.FC = () => {
-  const [conversations, setConversations] = useState<Conversation[]>(() => {
+  const [conversations, setConversations] = useState<Conversation[]>(() => loadConversationsFromLocalStorage());
+  const [activeConversationId, setActiveConversationId] = useState<string | null>(
+    conversations.length > 0 ? conversations[conversations.length - 1].id : null
+  );
+  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Helper function to load conversations from localStorage
+  function loadConversationsFromLocalStorage(): Conversation[] {
     const savedConversations = localStorage.getItem('conversations');
     let loadedConversations: Conversation[] = [];
     if (savedConversations) {
@@ -25,51 +33,90 @@ const App: React.FC = () => {
       id: Date.now().toString(),
       title: `Conversation: ${loadedConversations.length + 1}`,
       messages: [],
-      createdAt: Date.now()
+      createdAt: Date.now(),
     };
     return [...loadedConversations, newConversation];
-  });
+  }
 
-  const [activeConversationId, setActiveConversationId] = useState<string | null>(
-    conversations.length > 0 ? conversations[conversations.length - 1].id : null
-  );
-  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  // Helper function to save conversations to localStorage
+  function saveConversationsToLocalStorage(conversations: Conversation[]) {
+    try {
+      localStorage.setItem('conversations', JSON.stringify(conversations));
+    } catch (error) {
+      console.error('Failed to save conversations to localStorage:', error);
+    }
+  }
 
+  // Helper function to create a new conversation
+  function createNewConversation(text: string): Conversation {
+    return {
+      id: Date.now().toString(),
+      title: `Conversation: ${text}`,
+      messages: [{ text, isUser: true }],
+      createdAt: Date.now(),
+      firstUserMessage: text,
+    };
+  }
+
+  // Helper function to update an existing conversation
+  function updateConversationMessages(
+    conversationId: string,
+    text: string | null,
+    file: File | null
+  ): Conversation[] {
+    return conversations.map((conversation) => {
+      if (conversation.id === conversationId) {
+        const newMessages = [
+          ...conversation.messages,
+          ...(text ? [{ text, isUser: true }] : []),
+          ...(file ? [{ text: `Uploaded: ${file.name}`, isUser: true }] : []),
+        ];
+        const firstUserMessage =
+          conversation.firstUserMessage || (text ? text : `Uploaded: ${file?.name}`);
+        return { ...conversation, messages: newMessages, firstUserMessage };
+      }
+      return conversation;
+    });
+  }
+
+  // Helper function to call OpenAI API
+  async function callOpenAIAPI(messagesForAPI: any[]): Promise<string> {
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'gpt-3.5-turbo', // or 'gpt-4' if available
+        messages: messagesForAPI,
+        max_tokens: 150, // Adjust as needed
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`API request failed: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    return data.choices[0].message.content;
+  }
+
+  // Handle sending a message
   const handleSendMessage = async (data: { text: string; file: File | null }) => {
     const { text, file } = data;
 
     if (!activeConversationId) {
-      const newConversation: Conversation = {
-        id: Date.now().toString(),
-        title: `Conversation: ${text}`,
-        messages: [{ text, isUser: true }],
-        createdAt: Date.now(),
-        firstUserMessage: text,
-      };
+      const newConversation = createNewConversation(text);
       setConversations((prev) => [...prev, newConversation]);
       setActiveConversationId(newConversation.id);
       return;
     }
 
     // Update the active conversation with user message/file
-    setConversations((prev) =>
-      prev.map((conversation) => {
-        if (conversation.id === activeConversationId) {
-          const newMessages = [
-            ...conversation.messages,
-            ...(text ? [{ text, isUser: true }] : []),
-            ...(file ? [{ text: `Uploaded: ${file.name}`, isUser: true }] : []),
-          ];
-          const firstUserMessage =
-            conversation.firstUserMessage || (text ? text : `Uploaded: ${file?.name}`);
-          return { ...conversation, messages: newMessages, firstUserMessage };
-        }
-        return conversation;
-      })
-    );
+    setConversations(updateConversationMessages(activeConversationId, text, file));
 
-    // OpenAI API request
+    // Prepare messages for OpenAI API
     const activeConversation = conversations.find((c) => c.id === activeConversationId);
     const messagesForAPI = [
       { role: 'system', content: 'You are a helpful assistant.' },
@@ -83,25 +130,7 @@ const App: React.FC = () => {
     setIsLoading(true); // Show loading state
 
     try {
-      const response = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${API_KEY}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          model: 'gpt-3.5-turbo', // or 'gpt-4' if available
-          messages: messagesForAPI,
-          max_tokens: 150, // Adjust as needed
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`API request failed: ${response.statusText}`);
-      }
-
-      const data = await response.json();
-      const aiResponse = data.choices[0].message.content;
+      const aiResponse = await callOpenAIAPI(messagesForAPI);
 
       // Add AI response to the active conversation
       setConversations((prev) =>
@@ -142,12 +171,7 @@ const App: React.FC = () => {
   const handleShowConversations = () => setIsHistoryOpen(true);
 
   useEffect(() => {
-    try {
-      localStorage.setItem('conversations', JSON.stringify(conversations));
-      console.log(conversations)
-    } catch (error) {
-      console.error('Failed to save conversations to localStorage:', error);
-    }
+    saveConversationsToLocalStorage(conversations);
   }, [conversations]);
 
   return (
@@ -168,8 +192,8 @@ const App: React.FC = () => {
             id: c.id,
             title: c.title,
             firstUserMessage: c.firstUserMessage,
-            createdAt: formatDistanceToNow(c.createdAt)
-        }))}
+            createdAt: formatDistanceToNow(c.createdAt, { addSuffix: true }),
+          }))}
         isOpen={isHistoryOpen}
         onClose={() => setIsHistoryOpen(false)}
         onSelectConversation={(id) => setActiveConversationId(id)}
