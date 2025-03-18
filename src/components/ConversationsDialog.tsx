@@ -1,11 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-
-interface ConversationHistory {
-  id: string;
-  title: string;
-  firstUserMessage?: string;
-  createdAt: string;
-}
+import { ConversationHistory } from './types';
 
 interface ConversationsDialogProps {
   conversations: ConversationHistory[];

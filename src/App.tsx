@@ -1,16 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import ChatWindow from './components/ChatWindow';
-import Navbar from './components/Navbar';
 import ConversationsDialog from './components/ConversationsDialog';
+import Navbar from './components/Navbar';
+import { Conversation } from './components/types';
 import { formatDistanceToNow } from 'date-fns';
-
-interface Conversation {
-  id: string;
-  title: string;
-  messages: { text: string; isUser: boolean }[];
-  firstUserMessage?: string;
-  createdAt: number;
-}
 
 const API_KEY = import.meta.env.VITE_OPENAI_API_KEY;
 
