@@ -38,7 +38,7 @@ const InputBox: React.FC<InputBoxProps> = ({ onSendMessage }) => {
 
   return (
     <form onSubmit={handleSubmit} className="p-4 gap-2">
-      {/* display uploaded file */}
+      {/* Uploaded file */}
       {file && (
          <div className='transition-all duration-300 bg-gray-200 max-w-max rounded-xl p-1 mb-1.5 flex items-center dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white'>
             <div className='m-1' title='Attachment'>

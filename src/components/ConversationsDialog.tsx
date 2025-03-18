@@ -55,7 +55,7 @@ const ConversationsDialog: React.FC<ConversationsDialogProps> = ({
   return (
     <dialog
       ref={dialogRef}
-      className="dark:bg-gray-800 rounded-lg w-full md:max-w-xl p-6 max-h-[80vh] overflow-y-auto backdrop:bg-black backdrop:bg-opacity-50"
+      className={`${conversations.length === 0 && "h-1/3"} dark:bg-gray-800 rounded-lg w-full md:max-w-xl p-6 max-h-[80vh] overflow-y-auto backdrop:bg-black backdrop:bg-opacity-50`}
     >
       <div className="flex justify-between items-center mb-4">
          <div>
@@ -91,7 +91,7 @@ const ConversationsDialog: React.FC<ConversationsDialogProps> = ({
                 title={`Select conversation: ${conversation.firstUserMessage}`}
                 className="transition-all duration-300 block w-full text-left py-2 px-4 rounded-lg bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 hover:bg-gray-200"
               >
-                <h4 className="font-sans font-semibold mb-1 text-slate-900 dark:text-slate-50">
+                <h4 className="font-sans text-sm font-semibold text-slate-900 dark:text-slate-50">
                   {`${conversation.firstUserMessage && conversation.firstUserMessage.length > 125 ?
                       `${conversation.firstUserMessage.substring(0, 125)}...`
                       :
@@ -99,7 +99,7 @@ const ConversationsDialog: React.FC<ConversationsDialogProps> = ({
                   `}
                 </h4>
                 <div className="flex justify-between items-center">
-                  <p title={conversation.createdAt} className="font-sans text-xs text-slate-500 dark:text-slate-300">{conversation.createdAt}</p>
+                  <p title={conversation.createdAt} className="font-sans text-xs text-slate-500 dark:text-slate-300 italic">{conversation.createdAt}</p>
                   <button
                       onClick={() => onDeleteConversation(conversation.id)}
                       title="Delete conversation"
@@ -124,7 +124,9 @@ const ConversationsDialog: React.FC<ConversationsDialogProps> = ({
          </div>
         </div>
       ) : (
-        <p className="font-sans text-gray-500 dark:text-gray-200">No conversations yet.</p>
+        <div className="flex justify-center items-center h-48">
+          <p className="font-sans text-gray-500 dark:text-gray-200">No conversations yet.</p>
+        </div>
       )}
     </dialog>
   );
