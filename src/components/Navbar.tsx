@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import AbelFull from '../assets/abel-full.svg';
+import logo from '../assets/logo.svg';
 
 interface NavbarProps {
   onCreateNewConversation: () => void;
@@ -44,14 +44,14 @@ const Navbar: React.FC<NavbarProps> = ({ onCreateNewConversation, onShowConversa
     <div className="h-16 flex items-center justify-between w-full">
       <div className="absolute flex flex-row items-center start-1">
         <button className="p-4">
-          <img src={AbelFull} alt="Abel Logo" className="h-6 w-auto" />
+          <img src={logo} alt="Abel Logo" width={50} height={50} />
         </button>
       </div>
       <div className="grow justify-center hidden max-w-[50%] @[640px]/nav:flex"></div>
       <div className="p-4 absolute flex flex-row items-center gap-0.5 ml-auto end-3">
         <button
           onClick={toggleDarkMode}
-          className="border rounded-full p-2 hover:bg-gray-200 mr-2"
+          className="border rounded-full p-2 hover:bg-gray-200 mr-2 dark:hover:bg-blue-500 dark:hover:border-blue-400"
         >
           {darkMode ? (
             <svg
@@ -75,7 +75,7 @@ const Navbar: React.FC<NavbarProps> = ({ onCreateNewConversation, onShowConversa
         </button>
         <button
           onClick={onShowConversations}
-          className="border rounded-full p-2 hover:bg-gray-200 mr-2"
+          className="border rounded-full p-2 hover:bg-gray-200 mr-2 dark:hover:bg-blue-500 dark:hover:border-blue-400"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -88,7 +88,7 @@ const Navbar: React.FC<NavbarProps> = ({ onCreateNewConversation, onShowConversa
         </button>
         <button
           onClick={onCreateNewConversation}
-          className="border rounded-full p-2 hover:bg-gray-200"
+          className="border rounded-full p-2 hover:bg-gray-200 dark:hover:bg-blue-500 dark:hover:border-blue-400"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
