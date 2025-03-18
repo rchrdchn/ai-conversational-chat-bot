@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useCallback } from 'react';
 import { ConversationHistory } from './types';
 
 interface ConversationsDialogProps {
@@ -18,7 +18,7 @@ const ConversationsDialog: React.FC<ConversationsDialogProps> = ({
 
   const handleClearConversations = () => {
       // alert the user before clearing the conversations
-      if (!window.confirm('Are you sure you want to clear all conversations?')) {
+      if (!window.confirm('Are you sure you want to delete all conversations?')) {
          return;
       }
       localStorage.removeItem('conversations');
@@ -30,7 +30,7 @@ const ConversationsDialog: React.FC<ConversationsDialogProps> = ({
       window.location.reload();
    }
 
-  useEffect(() => {
+   const toggleDialogVisibility = useCallback(() => {
     const dialog = dialogRef.current;
     if (dialog) {
       if (isOpen && !dialog.open) {
@@ -40,6 +40,10 @@ const ConversationsDialog: React.FC<ConversationsDialogProps> = ({
       }
     }
   }, [isOpen]);
+
+  useEffect(() => {
+    toggleDialogVisibility();
+  }, [isOpen, toggleDialogVisibility]);
 
   return (
     <dialog
@@ -70,7 +74,7 @@ const ConversationsDialog: React.FC<ConversationsDialogProps> = ({
             <button
               key={conversation.id}
               onClick={() => onSelectConversation(conversation.id)}
-              className="block w-full text-left p-2 rounded bg-gray-200 dark:bg-gray-700 hover:bg-gray-200"
+              className="block w-full text-left py-2 px-4 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-200"
             >
               <h4 className="font-bold mb-1 text-slate-900 dark:text-slate-50">{conversation.firstUserMessage}</h4>
               <p className="text-xs text-slate-500 dark:text-slate-300">{conversation.createdAt}</p>

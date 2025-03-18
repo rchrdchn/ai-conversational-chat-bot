@@ -11,7 +11,6 @@ interface ChatWindowProps {
 const ChatWindow: React.FC<ChatWindowProps> = ({ messages, onSendMessage, isLoading }) => {
   return (
     <div className="h-[80vh] flex flex-col">
-      {/* Main Chat Area */}
       <MessageList messages={messages} isLoading={isLoading} />
       <InputBox onSendMessage={onSendMessage} />
     </div>

@@ -16,13 +16,14 @@ const InputBox: React.FC<InputBoxProps> = ({ onSendMessage }) => {
   };
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault(); // Prevent default form submission
+    e.preventDefault();
 
-    // Ensure either text or file is provided
-    if (input.trim() || file) {
-      onSendMessage({ text: input.trim(), file });
-      setInput(''); // Clear the text input
-      setFile(null); // Clear the file input
+    const inputText = input.trim();
+
+    if (inputText || file) {
+      onSendMessage({ text: inputText, file });
+      setInput('');
+      setFile(null);
     }
   };
   
@@ -55,6 +56,7 @@ const InputBox: React.FC<InputBoxProps> = ({ onSendMessage }) => {
         placeholder="How can Abel help?"
         className="flex-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
+      {/* File upload button */}
       <label className="cursor-pointer flex items-center px-4 py-2 bg-gray-200 text-black rounded-md hover:bg-gray-300 transition">
         <input type="file" className="hidden" onChange={handleFileChange}/>
         <span>
@@ -63,6 +65,7 @@ const InputBox: React.FC<InputBoxProps> = ({ onSendMessage }) => {
          </svg>
         </span>
       </label>
+      {/* Submit button */}
       <button
         type="submit"
         disabled={!input.trim() && !file}

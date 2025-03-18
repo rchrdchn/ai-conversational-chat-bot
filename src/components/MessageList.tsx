@@ -10,7 +10,7 @@ const MessageList: React.FC<MessageListProps> = ({ messages, isLoading }) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  const scrollToBottomIfNeeded = () => {
     const list = listRef.current;
     if (list) {
       const isAtBottom = list.scrollHeight - list.scrollTop <= list.clientHeight + 50;
@@ -18,6 +18,10 @@ const MessageList: React.FC<MessageListProps> = ({ messages, isLoading }) => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
       }
     }
+  };
+
+  useEffect(() => {
+    scrollToBottomIfNeeded();
   }, [messages, isLoading]);
 
   return (
@@ -31,7 +35,7 @@ const MessageList: React.FC<MessageListProps> = ({ messages, isLoading }) => {
         <Message key={index} text={msg.text} isUser={msg.isUser} />
       ))}
       {isLoading && (
-        <div className="p-3 rounded-3xl max-w-[70%] bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 self-start">
+        <div className="p-3 rounded-3xl w-fit bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 self-start">
           Typing...
         </div>
       )}

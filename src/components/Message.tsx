@@ -13,8 +13,7 @@ const Message: React.FC<MessageProps> = ({ text, isUser }) => {
       setIsCopied(true);
       setTimeout(() => {
          setIsCopied(false);
-      }
-      , 1050);
+      }, 1050);
    }
 
    return (
