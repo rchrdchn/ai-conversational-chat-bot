@@ -9,36 +9,37 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ onCreateNewConversation, onShowConversations }) => {
   const [darkMode, setDarkMode] = React.useState(false);
 
+  // Apply dark mode styles
+  const applyDarkMode = (isDarkMode: boolean) => {
+    const htmlElem = document.documentElement;
+    if (isDarkMode) {
+      htmlElem.classList.add('dark');
+      htmlElem.setAttribute('style', 'color-scheme: dark');
+    } else {
+      htmlElem.classList.remove('dark');
+      htmlElem.setAttribute('style', 'color-scheme: light');
+    }
+  };
+
+  // Save dark mode state to localStorage
+  const saveDarkModeToLocalStorage = (isDarkMode: boolean) => {
+    localStorage.setItem('darkMode', isDarkMode.toString());
+  };
+
+  // Toggle dark mode
   const toggleDarkMode = () => {
-   const htmlElem = document.documentElement;
-   const newDarkMode = !darkMode;
-   setDarkMode(newDarkMode);
+    const newDarkMode = !darkMode;
+    setDarkMode(newDarkMode);
+    applyDarkMode(newDarkMode);
+    saveDarkModeToLocalStorage(newDarkMode);
+  };
 
-   if (newDarkMode) {
-     htmlElem.classList.add('dark');
-     htmlElem.setAttribute('style', 'color-scheme: dark');
-     localStorage.setItem('darkMode', 'true'); // Save dark mode state to localStorage
-   } else {
-     htmlElem.classList.remove('dark');
-     htmlElem.setAttribute('style', 'color-scheme: light');
-     localStorage.setItem('darkMode', 'false'); // Save light mode state to localStorage
-   }
- };
-
- useEffect(() => {
-   // Load dark mode state from localStorage on component mount
-   const savedDarkMode = localStorage.getItem('darkMode') === 'true';
-   setDarkMode(savedDarkMode);
-
-   const htmlElem = document.documentElement;
-   if (savedDarkMode) {
-     htmlElem.classList.add('dark');
-     htmlElem.setAttribute('style', 'color-scheme: dark');
-   } else {
-     htmlElem.classList.remove('dark');
-     htmlElem.setAttribute('style', 'color-scheme: light');
-   }
- }, []);
+  useEffect(() => {
+    // Load dark mode state from localStorage on component mount
+    const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+    setDarkMode(savedDarkMode);
+    applyDarkMode(savedDarkMode);
+  }, []);
 
   return (
     <div className="h-16 flex items-center justify-between w-full">
@@ -49,6 +50,7 @@ const Navbar: React.FC<NavbarProps> = ({ onCreateNewConversation, onShowConversa
       </div>
       <div className="grow justify-center hidden max-w-[50%] @[640px]/nav:flex"></div>
       <div className="p-4 absolute flex flex-row items-center gap-0.5 ml-auto end-3">
+        {/* Dark Mode Toggle Button */}
         <button
           onClick={toggleDarkMode}
           className="border rounded-full p-2 hover:bg-blue-500 hover:text-white dark:hover:bg-blue-500 dark:hover:border-blue-400"
@@ -73,6 +75,8 @@ const Navbar: React.FC<NavbarProps> = ({ onCreateNewConversation, onShowConversa
             </svg>
           )}
         </button>
+
+        {/* Show Conversations Button */}
         <button
           onClick={onShowConversations}
           className="border rounded-full p-2 mx-1.5 hover:bg-blue-500 hover:text-white dark:hover:bg-blue-500 dark:hover:border-blue-400"
@@ -86,6 +90,8 @@ const Navbar: React.FC<NavbarProps> = ({ onCreateNewConversation, onShowConversa
             <path d="M3 4.75a1 1 0 1 0 0-2 1 1 0 0 0 0 2ZM6.25 3a.75.75 0 0 0 0 1.5h7a.75.75 0 0 0 0-1.5h-7ZM6.25 7.25a.75.75 0 0 0 0 1.5h7a.75.75 0 0 0 0-1.5h-7ZM6.25 11.5a.75.75 0 0 0 0 1.5h7a.75.75 0 0 0 0-1.5h-7ZM4 12.25a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM3 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" />
           </svg>
         </button>
+
+        {/* Create New Conversation Button */}
         <button
           onClick={onCreateNewConversation}
           className="border rounded-full p-2 hover:bg-blue-500 hover:text-white dark:hover:bg-blue-500 dark:hover:border-blue-400"

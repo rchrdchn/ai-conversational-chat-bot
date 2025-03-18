@@ -7,14 +7,7 @@ import { Conversation } from './components/types';
 import { formatDistanceToNow } from 'date-fns';
 
 const App: React.FC = () => {
-  const [conversations, setConversations] = useState<Conversation[]>(() => loadConversationsFromLocalStorage());
-  const [activeConversationId, setActiveConversationId] = useState<string | null>(
-    conversations.length > 0 ? conversations[conversations.length - 1].id : null
-  );
-  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-
-  // Helper function to load conversations from localStorage
+  // Load conversations from localStorage - here to load conversations from localStorage, if any, when the app starts
   const loadConversationsFromLocalStorage = (): Conversation[] => {
     const savedConversations = localStorage.getItem('conversations');
     let loadedConversations: Conversation[] = [];
@@ -37,7 +30,15 @@ const App: React.FC = () => {
     return [...loadedConversations, newConversation];
   };
 
-  // Helper function to save conversations to localStorage
+  const [conversations, setConversations] = useState<Conversation[]>(() => loadConversationsFromLocalStorage());
+  const [activeConversationId, setActiveConversationId] = useState<string | null>(
+    conversations.length > 0 ? conversations[conversations.length - 1].id : null
+  );
+  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+
+  // Save conversations to localStorage
   const saveConversationsToLocalStorage = (conversations: Conversation[]) => {
     try {
       localStorage.setItem('conversations', JSON.stringify(conversations));
@@ -46,7 +47,7 @@ const App: React.FC = () => {
     }
   };
 
-  // Helper function to create a new conversation
+  // Create a new conversation
   const createNewConversation = (text: string): Conversation => ({
     id: Date.now().toString(),
     title: `Conversation: ${text}`,
@@ -55,7 +56,7 @@ const App: React.FC = () => {
     firstUserMessage: text,
   });
 
-  // Helper function to update an existing conversation
+  // Update an existing conversation
   const updateConversationMessages = (
     conversationId: string,
     text: string | null,
