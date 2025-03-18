@@ -16,7 +16,7 @@ const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   // Helper function to load conversations from localStorage
-  function loadConversationsFromLocalStorage(): Conversation[] {
+  const loadConversationsFromLocalStorage = (): Conversation[] => {
     const savedConversations = localStorage.getItem('conversations');
     let loadedConversations: Conversation[] = [];
     if (savedConversations) {
@@ -36,35 +36,33 @@ const App: React.FC = () => {
       createdAt: Date.now(),
     };
     return [...loadedConversations, newConversation];
-  }
+  };
 
   // Helper function to save conversations to localStorage
-  function saveConversationsToLocalStorage(conversations: Conversation[]) {
+  const saveConversationsToLocalStorage = (conversations: Conversation[]) => {
     try {
       localStorage.setItem('conversations', JSON.stringify(conversations));
     } catch (error) {
       console.error('Failed to save conversations to localStorage:', error);
     }
-  }
+  };
 
   // Helper function to create a new conversation
-  function createNewConversation(text: string): Conversation {
-    return {
-      id: Date.now().toString(),
-      title: `Conversation: ${text}`,
-      messages: [{ text, isUser: true }],
-      createdAt: Date.now(),
-      firstUserMessage: text,
-    };
-  }
+  const createNewConversation = (text: string): Conversation => ({
+    id: Date.now().toString(),
+    title: `Conversation: ${text}`,
+    messages: [{ text, isUser: true }],
+    createdAt: Date.now(),
+    firstUserMessage: text,
+  });
 
   // Helper function to update an existing conversation
-  function updateConversationMessages(
+  const updateConversationMessages = (
     conversationId: string,
     text: string | null,
     file: File | null
-  ): Conversation[] {
-    return conversations.map((conversation) => {
+  ): Conversation[] =>
+    conversations.map((conversation) => {
       if (conversation.id === conversationId) {
         const newMessages = [
           ...conversation.messages,
@@ -77,14 +75,13 @@ const App: React.FC = () => {
       }
       return conversation;
     });
-  }
 
   // Helper function to call OpenAI API
-  async function callOpenAIAPI(messagesForAPI: any[]): Promise<string> {
+  const callOpenAIAPI = async (messagesForAPI: any[]): Promise<string> => {
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${API_KEY}`,
+        Authorization: `Bearer ${API_KEY}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -100,7 +97,7 @@ const App: React.FC = () => {
 
     const data = await response.json();
     return data.choices[0].message.content;
-  }
+  };
 
   // Handle sending a message
   const handleSendMessage = async (data: { text: string; file: File | null }) => {
