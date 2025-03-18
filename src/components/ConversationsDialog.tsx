@@ -63,17 +63,19 @@ const ConversationsDialog: React.FC<ConversationsDialogProps> = ({
             <button
               onClick={handleNewChat}
               title='Start a new chat'
-              className="bg-blue-600 hover:bg-blue-700 rounded py-1 px-2 mr-2 text-white focus:outline-none">
+              tabIndex={0}
+              className="bg-blue-600 hover:bg-blue-700 rounded py-1 px-2 mr-1 text-white focus:outline-none">
                New Chat
             </button>
             <button
                onClick={onClose}
                title='Close dialog'
-               className="text-gray-500 hover:text-gray-700 dark:text-slate-100 dark:hover:text-white focus:outline-none mr-2"
+               tabIndex={0}
+               className="p-1 rounded-full border hover:bg-gray-200 dark:hover:bg-gray-700 dark:text-slate-100 dark:hover:text-white focus:outline-none mr-1"
             >
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                     <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
-                  </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="size-5">
+                  <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
+                </svg>
             </button>
          </div>
       </div>
@@ -94,6 +96,7 @@ const ConversationsDialog: React.FC<ConversationsDialogProps> = ({
             <button
               onClick={handleClearConversations}
               title='Delete all conversations'
+              tabIndex={0}
               className="w-full border border-red-500 text-red-500 hover:bg-red-500 dark:hover:bg-red-600 dark:bg-red-500 dark:text-white rounded py-1 px-2 hover:text-white focus:outline-none">
                Delete All Conversations
             </button>
