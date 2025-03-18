@@ -51,7 +51,7 @@ const Navbar: React.FC<NavbarProps> = ({ onCreateNewConversation, onShowConversa
       <div className="p-4 absolute flex flex-row items-center gap-0.5 ml-auto end-3">
         <button
           onClick={toggleDarkMode}
-          className="border rounded-full p-2 hover:bg-gray-200 mr-2 dark:hover:bg-blue-500 dark:hover:border-blue-400"
+          className="border rounded-full p-2 hover:bg-blue-500 hover:text-white dark:hover:bg-blue-500 dark:hover:border-blue-400"
         >
           {darkMode ? (
             <svg
@@ -75,7 +75,7 @@ const Navbar: React.FC<NavbarProps> = ({ onCreateNewConversation, onShowConversa
         </button>
         <button
           onClick={onShowConversations}
-          className="border rounded-full p-2 hover:bg-gray-200 mr-2 dark:hover:bg-blue-500 dark:hover:border-blue-400"
+          className="border rounded-full p-2 mx-1.5 hover:bg-blue-500 hover:text-white dark:hover:bg-blue-500 dark:hover:border-blue-400"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -88,7 +88,7 @@ const Navbar: React.FC<NavbarProps> = ({ onCreateNewConversation, onShowConversa
         </button>
         <button
           onClick={onCreateNewConversation}
-          className="border rounded-full p-2 hover:bg-gray-200 dark:hover:bg-blue-500 dark:hover:border-blue-400"
+          className="border rounded-full p-2 hover:bg-blue-500 hover:text-white dark:hover:bg-blue-500 dark:hover:border-blue-400"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
